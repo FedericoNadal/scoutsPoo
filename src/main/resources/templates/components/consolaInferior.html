@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      >
+    
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <<div  th:fragment="consolaInferior">>
+         <aside class="input_datos">
+                                    <div class="card" style="width: 90%;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Nuevo item</li>
+                                            <li class="list-group-item">
+                                                <input type="text">
+                                            </li>
+                                            <li class="list-group-item">
+                                                <input type="text">
+                                            </li>
+                                            <li class="list-group-item">
+                                                <button type="submit">cargar item</button>
+                                            </li>
+                                        </ul>
+                                        <!--  <div class="card-footer">
+                                            Card footer
+                                        </div>-->
+                                    </div>
+                                </aside>
+
+                                <div class="segundo_logo">
+                                    <img th:src="@{/images/logo_flordDeLiz.png}" alt="logo scouts flr de liz" width="90%" >
+                                </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      >
+
+    <!--
+    Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+    Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+    -->
+
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+
+
+                <body>
+                    <header th:fragment="header">
+                        <div class="row">
+                            
+                            <div class="col-3">
+                                <div class="logoScoutsArgentina">
+                                    <img th:src="@{/images/logoScoutsArgentina.jpg}" alt="logo scouts argentina" width="100%" >
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4 offset-md-4 sesion">
+                                <div class="datos_usr">
+                                    <div>
+                                        <p th:text="${nombreUsr}">nombre no encontrado</p>
+                                        <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis libero illo debitis
+                                            reiciendis
+                                            repellat eligendi magni a possimus? Tenetur, dicta ut. Sed hic vel neque praesentium
+                                            veniam
+                                            facilis natus ad.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </header>
+                </body>
+                </html>

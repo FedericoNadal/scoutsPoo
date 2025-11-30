@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      >
+
+    <!--
+    Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+    Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+    -->
+
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+        <body>
+                    <nav th:fragment="nav">
+                        <div class="links">
+                            <a href="https://scouts.org.ar/">
+                                <h5 class="link-externo">Scouts Argentina</h5>
+                            </a>
+
+                            <a href="https://scouts.org.ar/biblioteca">
+                                <h5 class="link-externo">Biblioteca</h5>
+                            </a>
+
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Iniciar Sesion</button>
+
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                                 aria-labelledby="offcanvasRightLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasRightLabel">Iniciar Sesion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    ...
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+        </body>
+  </html>
