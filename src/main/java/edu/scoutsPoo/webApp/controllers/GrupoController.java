@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/grupo")
@@ -40,17 +41,22 @@ public class GrupoController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public Grupo update(@PathVariable Long id, @RequestBody Grupo nuevo) {
+public Grupo update(@PathVariable Long id, @RequestBody Map<String, String> body) {
     Grupo existente = grupoService.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grupo no encontrado"));
+            .orElseThrow(() -> new RuntimeException("No existe"));
 
-    existente.setDenominacion(nuevo.getDenominacion());
-    return grupoService.save(existente);
+    // Evitamos null y asignamos la denominación correctamente
+    String nuevaDescripcion = body.get("descripcion");
+    if (nuevaDescripcion != null) {
+        existente.setDenominacion(nuevaDescripcion);
     }
+
+    return grupoService.save(existente);
+}
 
     // DELETE
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         grupoService.deleteById(id);
     }
-}
+} 

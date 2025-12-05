@@ -3,6 +3,8 @@ package edu.scoutsPoo.webApp.services;
 import edu.scoutsPoo.webApp.entities.*;
 import edu.scoutsPoo.webApp.repositories.UsuarioRepository;
 
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -98,5 +100,9 @@ public class UsuarioService implements UserDetailsService {
                 .authorities(user.getRol().name()) // usa el enum Rol
                 .build();
     }
+public Optional<Usuario> findByUsername(String username) {
+        return usuarioRepository.findByUsername(username);
+    }
 
+  
 }

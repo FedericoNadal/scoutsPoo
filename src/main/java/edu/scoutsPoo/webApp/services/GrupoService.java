@@ -28,7 +28,7 @@ public class GrupoService {
 
     // Buscar por ID
     public Optional<Grupo> findById(Long id) {
-        return grupoRepository.findById(id);
+        return grupoRepository.findByCodigo(id);
     }
 
     // Buscar por denominación

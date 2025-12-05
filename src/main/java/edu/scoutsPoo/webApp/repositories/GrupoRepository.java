@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface GrupoRepository extends JpaRepository<Grupo, Long> {
 
-    Optional<Grupo> findByCodigo(int codigo);
+    Optional<Grupo> findByCodigo(long codigo);
     Optional<Grupo> findByDenominacion(String denominacion);
     
     boolean existsByCodigo(int codigo);

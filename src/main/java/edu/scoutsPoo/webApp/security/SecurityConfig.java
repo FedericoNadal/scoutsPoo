@@ -1,50 +1,67 @@
 package edu.scoutsPoo.webApp.security;
 
-import edu.scoutsPoo.webApp.services.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
-    private final UsuarioService usuarioService;
+    private final JwtAuthFilter jwtAuthFilter;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(usuarioService) // UsuarioService debe implementar UserDetailsService
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                          UserDetailsService userDetailsService) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-            .csrf().disable() // para pruebas en consola/Postman
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/usuarios/registro", "/usuarios/login").permitAll()
-                .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
-                .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
-                .requestMatchers("/grupos/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
-                .anyRequest().authenticated()
-            )
-            .httpBasic(); // autenticación básica para pruebas
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll() //OJO SOLO TESTING!!!!
+                        
+/*.requestMatchers("/", "/index", "/auth/login", "/auth/register").permitAll()
+            
+            // Rutas según roles
+            .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
+            .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
+            .requestMatchers("/grupos/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
+            
+            // Cualquier otra requiere autenticación
+            .anyRequest().authenticated()
+          */
+            );
+               // .authenticationProvider(authenticationProvider())
+             //   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
+        p.setUserDetailsService(userDetailsService);
+        p.setPasswordEncoder(new BCryptPasswordEncoder());
+        return p;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
+        return config.getAuthenticationManager();
     }
 }

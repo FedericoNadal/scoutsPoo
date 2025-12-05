@@ -50,7 +50,7 @@ public class UsuarioController {
     // ---------------------------------------------------
     // LOGIN DE USUARIO
     // ---------------------------------------------------
-    @PostMapping("/login")
+    @PostMapping("/login-viejo") //OJO!! solo para testing de security!!
     public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
         try {
             String username = payload.get("username");
