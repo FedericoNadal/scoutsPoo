@@ -40,7 +40,7 @@ public Sede update(@PathVariable Long codigo, @RequestBody Sede nueva) {
     existente.setProvincia(nueva.getProvincia());
     existente.setLocalidad(nueva.getLocalidad());
 
-    return sedeService.create(existente);
+    return sedeService.update(codigo, existente);
 } 
 
     @DeleteMapping("/{codigo}")
