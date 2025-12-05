@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,26 +39,32 @@ public class ActividadController {
     // CREATE
     // --------------------------------------------------------------
     @PostMapping
-    public Actividad create(@RequestBody String descripcionNueva) {
-        return actividadService.create(descripcionNueva);
-    }
+    public Actividad create(@RequestBody Map <String,String> descripcionNueva) {
+    String descripcion = descripcionNueva.get("descripcion");
+    return actividadService.create(descripcion);
+
+}
 
     // --------------------------------------------------------------
     // UPDATE
-    // --------------------------------------------------------------
-    @PutMapping("/{id}")
-    public ResponseEntity<Actividad> update(
-            @PathVariable Long id,
-            @RequestBody String descripcionNueva
-    ) {
-        Optional<Actividad> res = actividadService.findById(id);
-        if (res.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Actividad existente = res.get();
-        return ResponseEntity.ok(actividadService.create(descripcionNueva));
+   @PutMapping("/{id}")
+public ResponseEntity<Actividad> update(
+        @PathVariable Long id,
+        @RequestBody Map<String, String> body
+) {
+    Optional<Actividad> res = actividadService.findById(id);
+    if (res.isEmpty()) {
+        return ResponseEntity.notFound().build();
     }
+
+    Actividad existente = res.get();
+    String descripcionNueva = body.get("descripcion");
+    existente.setDescripcion(descripcionNueva);
+
+    // Guardamos con el service
+    actividadService.update(id ,descripcionNueva); // o update
+    return ResponseEntity.ok(existente);
+}
 
     // --------------------------------------------------------------
     // DELETE

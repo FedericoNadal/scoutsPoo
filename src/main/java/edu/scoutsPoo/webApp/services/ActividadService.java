@@ -2,6 +2,8 @@ package edu.scoutsPoo.webApp.services;
 
 import edu.scoutsPoo.webApp.entities.Actividad;
 import edu.scoutsPoo.webApp.repositories.ActividadRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,4 +40,20 @@ public class ActividadService {
     public boolean existsById(Long id) {
         return actividadRepository.existsById(id);
       }
+
+    // UPDATE
+    
+@Transactional
+public Actividad update(long id, String descripcionNueva) {
+    Optional<Actividad> optionalActividad = findById(id);
+
+    // Manejar el caso en que no exista
+    if (optionalActividad.isEmpty()) {
+        throw new RuntimeException("Actividad no encontrada con id: " + id);
+    }
+
+    Actividad actividadExistente = optionalActividad.get();
+    actividadExistente.setDescripcion(descripcionNueva);
+    return actividadRepository.save(actividadExistente);
+}
 }
