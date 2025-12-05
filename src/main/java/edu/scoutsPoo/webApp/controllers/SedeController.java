@@ -31,7 +31,7 @@ public class SedeController {
         return sedeService.create(sede);
     }
 
-   @PutMapping("/{codigo}")//!"OJO, probar si funciona la sobreesritura"
+   @PutMapping("/{codigo}")
 public Sede update(@PathVariable Long codigo, @RequestBody Sede nueva) {
     Sede existente = sedeService.findByCodigo(codigo);
 
