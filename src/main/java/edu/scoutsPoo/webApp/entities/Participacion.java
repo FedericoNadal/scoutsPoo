@@ -9,6 +9,8 @@ package edu.scoutsPoo.webApp.entities;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Participacion {
 
@@ -20,6 +22,7 @@ public class Participacion {
     private Scout scout;
 
     @ManyToOne(optional = false)
+    @JsonBackReference
     private Actividad actividad;
 
     private LocalDate fecha;

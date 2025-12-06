@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Actividad {
 
@@ -15,6 +17,7 @@ public class Actividad {
     private String descripcion;
 
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Participacion> participaciones = new HashSet<>();
 
     // Constructor vacío requerido por JPA
