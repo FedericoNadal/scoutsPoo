@@ -50,6 +50,9 @@ public class Scout {
         this.comunidad = comunidad;
         this.sede = sede;
     }
+public Long getId() {
+        return id;
+    }
 
     public String getNombre() {
         return nombre;

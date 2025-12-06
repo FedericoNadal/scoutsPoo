@@ -19,4 +19,8 @@ public interface ScoutRepository extends JpaRepository<Scout, Long> {
     boolean existsByApodo(String apodo);
 
     Optional <Scout> findByApodo(String apodo);
-}
+    Optional <Scout> findById(Long id);
+    boolean existsById(Long id);
+
+
+    }
