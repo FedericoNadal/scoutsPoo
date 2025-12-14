@@ -1,26 +1,22 @@
 package edu.scoutsPoo.webApp.controllers;
 
-import edu.scoutsPoo.webApp.entities.Comunidad;
-import edu.scoutsPoo.webApp.entities.Graduacion;
-import edu.scoutsPoo.webApp.entities.Grupo;
-import edu.scoutsPoo.webApp.entities.Scout;
-import edu.scoutsPoo.webApp.entities.Sede;
-import edu.scoutsPoo.webApp.services.ScoutService;
-//import edu.scoutsPoo.webApp.services.SedeService;
-//import edu.scoutsPoo.webApp.services.GrupoService;
-//import edu.scoutsPoo.webApp.services.ComunidadService;
-
-import edu.scoutsPoo.webApp.DTOs.ScoutDto;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import edu.scoutsPoo.webApp.DTOs.ScoutDto;
+import edu.scoutsPoo.webApp.entities.Scout;
+import edu.scoutsPoo.webApp.services.ScoutService;
 
 @RestController
 @RequestMapping("/scouts")
@@ -75,7 +71,7 @@ public ResponseEntity<?> getById(@PathVariable Long id) {
     }
  
     // --------------------------------------------------------------
-    // UPDATE  (NO modificar id )
+    // UPDATE  (NO modificar id ni apodo )
     // --------------------------------------------------------------
     @PutMapping("/{id}")
     public ResponseEntity<Scout> update(@PathVariable Long id, @RequestBody Scout nuevo) {
@@ -87,16 +83,17 @@ public ResponseEntity<?> getById(@PathVariable Long id) {
 
         Scout existente = resultado.get();
 
-        // No modificamos existente.setId(...)
-      
-       // existente.setApodo(nuevo.getApodo());
+        if (nuevo.getNombre() != null) {
         existente.setNombre(nuevo.getNombre());
-        existente.setApellido(nuevo.getApellido());
-        existente.setGraduacion(nuevo.getGraduacion());
+    }
 
-        //existente.setGrupo(nuevo.getGrupo());
-        //existente.setComunidad(nuevo.getComunidad());
-        //existente.setSede(nuevo.getSede());
+    if (nuevo.getApellido() != null) {
+        existente.setApellido(nuevo.getApellido());
+    }
+
+    if (nuevo.getGraduacion() != null) {
+        existente.setGraduacion(nuevo.getGraduacion());
+    }
 
         return ResponseEntity.ok(scoutService.save(existente));
     }
