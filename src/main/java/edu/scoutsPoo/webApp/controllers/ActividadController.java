@@ -1,11 +1,13 @@
 package edu.scoutsPoo.webApp.controllers;
 
 import edu.scoutsPoo.webApp.entities.Actividad;
+import edu.scoutsPoo.webApp.entities.Participacion;
 import edu.scoutsPoo.webApp.services.ActividadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class ActividadController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    
     // --------------------------------------------------------------
     // CREATE
     // --------------------------------------------------------------
@@ -77,4 +80,24 @@ public ResponseEntity<Actividad> update(
         actividadService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
+@GetMapping("/{id}/participaciones")
+public ResponseEntity<List<Participacion>> participaciones(@PathVariable Long id) {
+
+    Optional<Actividad> opt = actividadService.findById(id);
+
+    if (opt.isEmpty()) {
+        return ResponseEntity.notFound().build();
+    }
+
+    Actividad actividad = opt.get();
+
+    List<Participacion> participaciones =
+        new ArrayList<>(actividad.getParticipaciones());
+        System.out.println(participaciones);
+
+    return ResponseEntity.ok(participaciones);
 }
+
+} 
