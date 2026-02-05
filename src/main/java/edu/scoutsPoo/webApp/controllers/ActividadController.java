@@ -3,6 +3,7 @@ package edu.scoutsPoo.webApp.controllers;
 import edu.scoutsPoo.webApp.entities.Actividad;
 import edu.scoutsPoo.webApp.entities.Participacion;
 import edu.scoutsPoo.webApp.services.ActividadService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import edu.scoutsPoo.webApp.DTOs.ActividadDto;
 
 @RestController
 @RequestMapping("/actividades")
@@ -42,11 +45,11 @@ public class ActividadController {
     // CREATE
     // --------------------------------------------------------------
     @PostMapping
-    public Actividad create(@RequestBody Map <String,String> descripcionNueva) {
-    String descripcion = descripcionNueva.get("descripcion");
-    return actividadService.create(descripcion);
-
+  public Actividad create(@RequestBody Actividad nueva) {
+    return actividadService.create(nueva);
 }
+
+
 
     // --------------------------------------------------------------
     // UPDATE

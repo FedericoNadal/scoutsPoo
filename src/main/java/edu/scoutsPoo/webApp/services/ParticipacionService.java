@@ -7,7 +7,7 @@ import edu.scoutsPoo.webApp.repositories.ActividadRepository;
 import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
 import edu.scoutsPoo.webApp.repositories.ScoutRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class ParticipacionService {
         Actividad actividad = actividadRepository.findById(dto.getActividadId())
                 .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
 
-        Participacion participacion = new Participacion(scout, actividad, dto.getFecha(), dto.getObservaciones());
+        Participacion participacion = new Participacion(scout, actividad,dto.getObservaciones());
 
         return participacionRepository.save(participacion);
     }
@@ -80,7 +80,7 @@ public class ParticipacionService {
 
     p.setScout(scout);
     p.setActividad(actividad);
-    p.setFecha(dto.getFecha());
+   // p.setFecha(dto.getFecha());
     p.setObservaciones(dto.getObservaciones());
 
     return participacionRepository.save(p);

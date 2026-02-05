@@ -7,7 +7,7 @@
 package edu.scoutsPoo.webApp.entities;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -25,16 +25,16 @@ public class Participacion {
     @JsonBackReference
     private Actividad actividad;
 
-    private LocalDate fecha;
+    //private LocalDate fecha;
 
     private String observaciones;
 
     public Participacion() {}
 
-    public Participacion(Scout scout, Actividad actividad, LocalDate fecha, String obs) {
+    public Participacion(Scout scout, Actividad actividad, String obs) {
         this.scout = scout;
         this.actividad = actividad;
-        this.fecha = fecha;
+       // this.fecha = fecha;
         this.observaciones = obs;
     }
 
@@ -45,8 +45,8 @@ public class Participacion {
     public Actividad getActividad() { return actividad; }
     public void setActividad(Actividad a) { this.actividad = a; }
 
-    public LocalDate getFecha() { return fecha; }
-    public void setFecha(LocalDate f) { this.fecha = f; }
+   // public LocalDate getFecha() { return fecha; }
+   // public void setFecha(LocalDate f) { this.fecha = f; }
 
     public String getObservaciones() { return observaciones; }
     public void setObservaciones(String obs) { this.observaciones = obs; }

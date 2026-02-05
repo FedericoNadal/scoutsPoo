@@ -1,11 +1,15 @@
 package edu.scoutsPoo.webApp.entities;
 
 import jakarta.persistence.*;
-//import java.time.LocalDate;
+
+import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import edu.scoutsPoo.webApp.DTOs.ActividadDto;
 
 @Entity
 public class Actividad {
@@ -16,6 +20,8 @@ public class Actividad {
 
     private String descripcion;
 
+    private LocalDate fecha;
+
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Set<Participacion> participaciones = new HashSet<>();
@@ -23,8 +29,9 @@ public class Actividad {
     // Constructor vacío requerido por JPA
     public Actividad() {}
 
-    public Actividad(String descripcion) {
-        this.descripcion = descripcion;
+    public Actividad(ActividadDto nueva) {
+        this.descripcion = nueva.getDescripcionActividad();
+        this.fecha = nueva.getFechaActividad();
     }
 
     // Getters y Setters
@@ -34,6 +41,9 @@ public class Actividad {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate f) { this.fecha = f; }
 
     public Set<Participacion> getParticipaciones() { return participaciones; }
 

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import edu.scoutsPoo.webApp.DTOs.ActividadDto;
+
 @Service
 public class ActividadService {
 
@@ -17,11 +19,9 @@ public class ActividadService {
     public ActividadService(ActividadRepository actividadRepository) {
         this.actividadRepository = actividadRepository;
     }
-
-    public Actividad create(String descripcion) {
-        Actividad actividad = new Actividad(descripcion);
-        return actividadRepository.save(actividad);
-    }
+public Actividad create(Actividad actividad) {
+    return actividadRepository.save(actividad);
+}
 
     public List<Actividad> findAll() {
         return actividadRepository.findAll();

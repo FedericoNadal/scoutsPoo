@@ -5,7 +5,8 @@
 
 package edu.scoutsPoo.webApp.DTOs;
 
-import java.util.Date;
+//import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -13,33 +14,27 @@ import java.util.Date;
  */
 public class ActividadDto {
     
-    private int codigoActividad;
-    private String nombreActividad;
-    private String descripcionActividad;
-    public  Date fechaActividad; 
+     
+    private String descripcion;
+    private LocalDate fecha; 
 
     
-      public String getNombreActividad() {
-        return nombreActividad;
-      }
-
+      
        public String getDescripcionActividad() {
-        return descripcionActividad;
+        return descripcion;
     }
     
-      public Date getFechaActividad() {
-        return fechaActividad;
+     public LocalDate getFechaActividad() {
+        return fecha;
     }
       
-      public int getCodigo(){
-          return codigoActividad;
-      }
-
+  
       
 ///////////////////////////////////////////
 
-       public void setNombreActividad(String nombreActividad) {
-        this.nombreActividad = nombreActividad;
+   
+     public void setFechaActividad(LocalDate fechaActividad) {
+        this.fecha = fechaActividad;
     }
 }
 

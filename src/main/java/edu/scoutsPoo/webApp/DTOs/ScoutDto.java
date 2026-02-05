@@ -5,8 +5,7 @@
 
 package edu.scoutsPoo.webApp.DTOs;
 
-import org.thymeleaf.expression.Ids;
-
+//import org.thymeleaf.expression.Ids;
 //import edu.scoutsPoo.webApp.entities.Comunidad;
 //import edu.scoutsPoo.webApp.entities.Grupo;
 //import edu.scoutsPoo.webApp.entities.Sede;
