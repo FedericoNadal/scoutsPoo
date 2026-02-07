@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import edu.scoutsPoo.webApp.DTOs.ParticipacionDto;
@@ -49,17 +50,19 @@ public class ParticipacionController {
     // UPDATE
     // --------------------------------------------------------------
     @PutMapping("/{id}")
-    public ResponseEntity<Participacion> update(
-            @PathVariable Long id,
-            @RequestBody ParticipacionDto dto
-    ) {
-        Optional<Participacion> res = participacionService.findById(id);
-        if (res.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+   public ResponseEntity<Participacion> updateObservaciones(
+        @PathVariable Long id,
+        @RequestBody Map<String, String> body) {
 
-        return ResponseEntity.ok(participacionService.updateFromDto(id, dto));
-    }
+    return participacionService.findById(id)
+        .map(p -> {
+            if (body.containsKey("observaciones")) {
+                p.setObservaciones(body.get("observaciones"));
+            }
+            return ResponseEntity.ok(participacionService.save(p));
+        })
+        .orElse(ResponseEntity.notFound().build());
+}
 
     // --------------------------------------------------------------
     // DELETE
