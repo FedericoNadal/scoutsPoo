@@ -18,12 +18,14 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
+   
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+ public SecurityConfig(JwtAuthFilter jwtAuthFilter,
                           UserDetailsService userDetailsService) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -31,8 +33,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() //OJO SOLO TESTING!!!!
+                .anyRequest().permitAll() //OJO SOLO TESTING!!!!
                         
 /*.requestMatchers("/", "/index", "/auth/login", "/auth/register").permitAll()
             
@@ -55,7 +58,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider p = new DaoAuthenticationProvider();
         p.setUserDetailsService(userDetailsService);
-        p.setPasswordEncoder(new BCryptPasswordEncoder());
+        p.setPasswordEncoder(passwordEncoder());
         return p;
     }
 
@@ -64,4 +67,9 @@ public class SecurityConfig {
             throws Exception {
         return config.getAuthenticationManager();
     }
+
+    @Bean
+public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
 }

@@ -46,9 +46,9 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    // ---------------------------------------------------
-    // LOGIN DE USUARIO
+}
+/*    // ---------------------------------------------------
+    // LOGIN DE USUARIO VIEJO
     // ---------------------------------------------------
     @PostMapping("/login-viejo") //OJO!! solo para testing de security!!
     public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
@@ -62,3 +62,4 @@ public class UsuarioController {
         }
     }
 }
+*/

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.scoutsPoo.webApp.DTOs.ScoutDto;
 import edu.scoutsPoo.webApp.entities.Scout;
 import edu.scoutsPoo.webApp.services.ScoutService;
+import edu.scoutsPoo.webApp.services.UsuarioService;
 
 @RestController
 @RequestMapping("/scouts")
@@ -25,9 +26,11 @@ public class ScoutController {
     @Autowired
     
      private final ScoutService scoutService;
+     private final UsuarioService usuarioService;
 
-    public ScoutController(ScoutService scoutService) {
+    public ScoutController(ScoutService scoutService, UsuarioService usuarioService) {
         this.scoutService = scoutService;
+        this.usuarioService = usuarioService;
     }
 
     // --------------------------------------------------------------
@@ -74,16 +77,17 @@ public ResponseEntity<?> getById(@PathVariable Long id) {
     // UPDATE  (NO modificar id ni apodo )
     // --------------------------------------------------------------
     @PutMapping("/{id}")
-    public ResponseEntity<Scout> update(@PathVariable Long id, @RequestBody Scout nuevo) {
+public ResponseEntity<Scout> update(@PathVariable Long id,
+                                    @RequestBody Scout nuevo) {
 
-        Optional<Scout> resultado = scoutService.findById(id);
-        if (resultado.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+    Optional<Scout> resultado = scoutService.findById(id);
+    if (resultado.isEmpty()) {
+        return ResponseEntity.notFound().build();
+    }
 
-        Scout existente = resultado.get();
+    Scout existente = resultado.get();
 
-        if (nuevo.getNombre() != null) {
+    if (nuevo.getNombre() != null) {
         existente.setNombre(nuevo.getNombre());
     }
 
@@ -91,12 +95,16 @@ public ResponseEntity<?> getById(@PathVariable Long id) {
         existente.setApellido(nuevo.getApellido());
     }
 
-    if (nuevo.getGraduacion() != null) {
+    if (nuevo.getGraduacion() != null &&
+        !nuevo.getGraduacion().equals(existente.getGraduacion())) {
+
         existente.setGraduacion(nuevo.getGraduacion());
+       usuarioService.actualizarRolSegunScout(existente);
     }
 
-        return ResponseEntity.ok(scoutService.save(existente));
-    }
+    return ResponseEntity.ok(scoutService.save(existente));
+}
+
 
     // --------------------------------------------------------------
     // DELETE

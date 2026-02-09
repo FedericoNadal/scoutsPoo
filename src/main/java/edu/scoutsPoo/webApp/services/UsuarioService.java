@@ -15,10 +15,12 @@ import org.springframework.stereotype.Service;
 public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+     BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // ---------------------------------------------------
@@ -45,7 +47,7 @@ public class UsuarioService implements UserDetailsService {
 
         Usuario usuario = new Usuario(
                 username,
-                encoder.encode(password),
+                passwordEncoder.encode(password),
                 rolAsignado,
                 scout
         );
@@ -60,7 +62,7 @@ public class UsuarioService implements UserDetailsService {
         Usuario user = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        if (!encoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
@@ -68,19 +70,18 @@ public class UsuarioService implements UserDetailsService {
     }
 
     // ---------------------------------------------------
-    // LOGICA: deducir el rol según la graduación del scout
+    // LOGICA: deducir el rol según la graduación del scout.
+    //
     // ---------------------------------------------------
     private Rol deducirRolDesdeScout(Scout scout) {
     Graduacion grad = scout.getGraduacion();
 
     switch (grad) {
         case CASTOR:
-            return Rol.CASTOR;
         case LOBATO:
         case LOBEZNA:
-            return Rol.LOBATO;
         case CAMINANTE:
-            return Rol.CAMINANTE;
+            return Rol.SCOUT;
         case ROVER:
             return Rol.ROVER;
         case EDUCADOR:
@@ -100,9 +101,25 @@ public class UsuarioService implements UserDetailsService {
                 .authorities(user.getRol().name()) // usa el enum Rol
                 .build();
     }
+
 public Optional<Usuario> findByUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
 
-  
+ public void actualizarRolSegunScout(Scout scout) {
+    if (scout == null) return;
+
+    Optional<Usuario> optUsuario = usuarioRepository.findByScout(scout);
+    if (optUsuario.isEmpty()) return;
+
+    Usuario usuario = optUsuario.get();
+
+    Rol nuevoRol = deducirRolDesdeScout(scout);
+
+    if (usuario.getRol() != nuevoRol) {
+        usuario.setRol(nuevoRol);
+        usuarioRepository.save(usuario);
+    }
+}
+
 }
