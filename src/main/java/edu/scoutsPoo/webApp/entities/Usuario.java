@@ -19,7 +19,7 @@ public class Usuario {
     private String password; // hashed
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "rol", length = 20, nullable = false)
     private Rol rol;
 
     @OneToOne

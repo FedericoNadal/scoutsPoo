@@ -16,11 +16,15 @@ public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ScoutService scoutService;
+
 
     public UsuarioService(UsuarioRepository usuarioRepository,
-     BCryptPasswordEncoder passwordEncoder) {
+                        BCryptPasswordEncoder passwordEncoder, 
+                        ScoutService scoutService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.scoutService = scoutService;
     }
 
     // ---------------------------------------------------
@@ -28,32 +32,37 @@ public class UsuarioService implements UserDetailsService {
     // ---------------------------------------------------
     public Usuario registrar(String username, String password, Scout scout, Rol rolManual) {
 
-        if (usuarioRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("El nombre de usuario ya existe");
-        }
-
-        Rol rolAsignado;
-
-        if (scout != null) {
-            // Si tiene scout, deducimos rol automáticamente
-            rolAsignado = deducirRolDesdeScout(scout);
-        } else {
-            // Si NO tiene scout → debe proveer rol explícito (ADMIN)
-            if (rolManual == null) {
-                throw new RuntimeException("Un usuario sin scout debe tener un rol explícito");
-            }
-            rolAsignado = rolManual;
-        }
-
-        Usuario usuario = new Usuario(
-                username,
-                passwordEncoder.encode(password),
-                rolAsignado,
-                scout
-        );
-
-        return usuarioRepository.save(usuario);
+    if (usuarioRepository.findByUsername(username).isPresent()) {
+        throw new RuntimeException("El nombre de usuario ya existe");
     }
+
+    // 🔍 Intentar resolver scout si viene null
+    Scout scoutFinal = Optional.ofNullable(scout)
+            .or(() -> scoutService.findByApodo(username))
+            .orElse(null);
+
+    Rol rolAsignado;
+
+    if (scoutFinal != null) {
+        rolAsignado = deducirRolDesdeScout(scoutFinal);
+    } else {
+        if (rolManual == null) {
+            throw new RuntimeException(
+                "Un usuario sin scout debe tener un rol explícito"
+            );
+        }
+        rolAsignado = rolManual;
+    }
+
+    Usuario usuario = new Usuario(
+            username,
+            passwordEncoder.encode(password),
+            rolAsignado,
+            scoutFinal
+    );
+
+    return usuarioRepository.save(usuario);
+}
 
     // ---------------------------------------------------
     // LOGIN

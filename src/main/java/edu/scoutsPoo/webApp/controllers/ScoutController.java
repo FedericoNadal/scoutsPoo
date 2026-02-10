@@ -45,7 +45,7 @@ public class ScoutController {
     // GET BY APODO
     // --------------------------------------------------------------
     @GetMapping("/apodo/{apodo}")
-    public Scout getByApodo(@PathVariable String apodo) {
+    public Optional<Scout> getByApodo(@PathVariable String apodo) {
         return scoutService.findByApodo(apodo);
                
     }

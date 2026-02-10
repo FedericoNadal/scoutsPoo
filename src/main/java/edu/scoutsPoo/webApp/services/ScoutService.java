@@ -73,9 +73,13 @@ public class ScoutService {
         return scoutRepository.findAll();
     }
 
-    public Scout findByApodo(String apodo) {
-        return scoutRepository.findByApodo(apodo)
-                .orElse(null);
+    public boolean existsByApodo(String apodo) {
+    return scoutRepository.existsByApodo(apodo);
+    }
+
+    public Optional<Scout> findByApodo(String apodo) {
+        return scoutRepository.findByApodo(apodo);
+             
     }
 
     public Scout save(Scout scout) {
@@ -87,9 +91,7 @@ public class ScoutService {
                 .ifPresent(scoutRepository::delete);
     }
 
-    public boolean existsByApodo(String apodo) {
-    return scoutRepository.existsByApodo(apodo);
-    }
+    
 
     public Scout create(Scout nuevoScout) {
         return scoutRepository.save(nuevoScout);
@@ -105,5 +107,6 @@ public class ScoutService {
        return scoutRepository.existsById(id);
     
     }
+
 }
 
