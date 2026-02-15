@@ -31,20 +31,20 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario data) {
 
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        data.getUsername(),
-                        data.getPassword()
-                )
-        );
+        var authentication = authManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    data.getUsername(),
+                    data.getPassword()
+            )
+    );
+var userDetails = (org.springframework.security.core.userdetails.UserDetails)
+            authentication.getPrincipal();
 
-    Usuario user = usuarioService.findByUsername(data.getUsername())
-        .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-        
-        String token = jwtUtil.generarToken(user.getUsername());
+    String token = jwtUtil.generarToken(userDetails);
 
-        return ResponseEntity.ok().body(
-                java.util.Map.of("token", token)
-        );
-    }
+    return ResponseEntity.ok().body(
+            java.util.Map.of("token", token)
+    );
+}
+
 }
