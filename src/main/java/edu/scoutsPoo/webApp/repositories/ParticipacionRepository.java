@@ -12,4 +12,5 @@ public interface ParticipacionRepository extends JpaRepository<Participacion, Lo
     List<Participacion> findByScoutId(Long scoutId);
 
     boolean existsByScoutIdAndActividadId(Long scoutId, Long actividadId);
-}
+
+  }

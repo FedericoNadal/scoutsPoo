@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // 👈 ahora sí existe
                 .authorizeHttpRequests(auth -> auth
-                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/index", "/auth/login", "/auth/register").permitAll()
                         .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
                         .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")

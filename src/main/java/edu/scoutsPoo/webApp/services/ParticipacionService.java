@@ -31,18 +31,6 @@ public class ParticipacionService {
         this.actividadRepository = actividadRepository;
     }
 
-    public Participacion saveFromDto(ParticipacionDto dto) {
-        Scout scout = scoutRepository.findById(dto.getScoutId())
-                .orElseThrow(() -> new IllegalArgumentException("Scout no encontrado"));
-
-        Actividad actividad = actividadRepository.findById(dto.getActividadId())
-                .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
-
-        Participacion participacion = new Participacion(scout, actividad,dto.getObservaciones());
-
-        return participacionRepository.save(participacion);
-    }
-
 
 
     // --------------------------------------------------------------
@@ -62,9 +50,46 @@ public class ParticipacionService {
     // --------------------------------------------------------------
     // SAVE 
     // --------------------------------------------------------------
-    public Participacion save(Participacion p) {
-        return participacionRepository.save(p);
+   public Participacion save(Participacion p) {
+
+    if (p.getActividad() == null || p.getScout() == null) {
+        throw new IllegalArgumentException("Actividad y Scout son obligatorios");
     }
+
+    Long actividadId = p.getActividad().getId();
+    Long scoutId = p.getScout().getId();
+
+    if (participacionRepository
+            .existsByScoutIdAndActividadId(scoutId,actividadId)) {
+
+        throw new IllegalStateException(
+            "El scout ya está inscripto en esta actividad");
+    }
+
+    return participacionRepository.save(p);
+}
+
+
+public Participacion saveFromDto(ParticipacionDto dto) {
+
+    Scout scout = scoutRepository.findById(dto.getScoutId())
+            .orElseThrow(() -> new IllegalArgumentException("Scout no encontrado"));
+
+    Actividad actividad = actividadRepository.findById(dto.getActividadId())
+            .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
+
+    if (participacionRepository
+            .existsByScoutIdAndActividadId(scout.getId(), actividad.getId())) {
+
+        throw new IllegalStateException(
+                "El scout ya está inscripto en esta actividad");
+    }
+
+    Participacion participacion =
+            new Participacion(scout, actividad, dto.getObservaciones());
+
+    return participacionRepository.save(participacion);
+}
 
     //---------------------------------
     //   UPDATE from dto

@@ -12,6 +12,13 @@ import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
+
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"actividad_id", "scout_id"})
+    }
+)
+
 public class Participacion {
 
     @Id
@@ -19,9 +26,11 @@ public class Participacion {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "scout_id", nullable = false)
     private Scout scout;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "actividad_id", nullable = false)
     @JsonBackReference
     private Actividad actividad;
 
