@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
                         .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
                         .requestMatchers("/grupo/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
+                        .requestMatchers("/participaciones/**").hasAnyAuthority("EDUCADOR","ROVER")
                         .anyRequest().authenticated()
                 );
 
@@ -78,12 +79,13 @@ public class SecurityConfig {
 
         configuration.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "http://192.168.*.*:5173"
+                "http://192.168.*.*:5173",
+                "http://10.*.*.*:5173"
         ));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

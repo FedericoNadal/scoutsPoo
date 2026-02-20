@@ -59,7 +59,7 @@ public class ParticipacionController {
             if (body.containsKey("observaciones")) {
                 p.setObservaciones(body.get("observaciones"));
             }
-            return ResponseEntity.ok(participacionService.save(p));
+            return ResponseEntity.ok(participacionService.updateObservaciones(p));
         })
         .orElse(ResponseEntity.notFound().build());
 }

@@ -69,7 +69,7 @@ public class ParticipacionService {
     return participacionRepository.save(p);
 }
 
-
+///
 public Participacion saveFromDto(ParticipacionDto dto) {
 
     Scout scout = scoutRepository.findById(dto.getScoutId())
@@ -89,6 +89,11 @@ public Participacion saveFromDto(ParticipacionDto dto) {
             new Participacion(scout, actividad, dto.getObservaciones());
 
     return participacionRepository.save(participacion);
+}
+
+///
+public Participacion updateObservaciones(Participacion p) {
+    return participacionRepository.save(p);
 }
 
     //---------------------------------
