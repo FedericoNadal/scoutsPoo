@@ -40,7 +40,14 @@ public class ActividadController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    
+    // ---------------------------------------------------------------
+    // GET MIS ACTIVIDADES
+    // ---------------------------------------------------------------
+    @GetMapping("/misActividades")
+    public ResponseEntity<List<ActividadDto>> misActividades() {
+        return ResponseEntity.ok(actividadService.misActividades());
+}
+
     // --------------------------------------------------------------
     // CREATE
     // --------------------------------------------------------------
@@ -53,6 +60,7 @@ public class ActividadController {
 
     // --------------------------------------------------------------
     // UPDATE
+
    @PutMapping("/{id}")
 public ResponseEntity<Actividad> update(
         @PathVariable Long id,

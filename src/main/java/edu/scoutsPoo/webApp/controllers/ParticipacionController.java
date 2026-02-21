@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import edu.scoutsPoo.webApp.DTOs.ActividadDto;
 import edu.scoutsPoo.webApp.DTOs.ParticipacionDto;
 
 @RestController
@@ -27,6 +28,9 @@ public class ParticipacionController {
     public List<Participacion> getAll() {
         return participacionService.findAll();
     }
+
+
+    
 
     // --------------------------------------------------------------
     // GET BY ID

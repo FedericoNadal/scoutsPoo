@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/index", "/auth/login", "/auth/register").permitAll()
                         .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
+                       .requestMatchers("/actividades/misActividades").hasAnyAuthority("SCOUT","ROVER")
                         .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
                         .requestMatchers("/grupo/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/participaciones/**").hasAnyAuthority("EDUCADOR","ROVER")
