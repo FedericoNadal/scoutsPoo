@@ -3,6 +3,7 @@ package edu.scoutsPoo.webApp.services;
 import edu.scoutsPoo.webApp.entities.Actividad;
 import edu.scoutsPoo.webApp.entities.Participacion;
 import edu.scoutsPoo.webApp.entities.Scout;
+import edu.scoutsPoo.webApp.entities.Usuario;
 import edu.scoutsPoo.webApp.repositories.ActividadRepository;
 import edu.scoutsPoo.webApp.repositories.ScoutRepository;
 import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import edu.scoutsPoo.webApp.DTOs.ActividadDto;
+import edu.scoutsPoo.webApp.DTOs.MisActividadesDto;
 
 @Service
 public class ActividadService {
@@ -50,19 +52,27 @@ public Actividad create(Actividad actividad) {
     return actividadRepository.findById(id);
 }
 
-public List<ActividadDto> misActividades() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String apodo = auth.getName();
+public List<MisActividadesDto> misActividades() {
 
-  Scout scout = scoutRepository.findByApodo(apodo)
-    .orElseThrow(() -> new RuntimeException("Scout no encontrado"));
+    String username = SecurityContextHolder
+            .getContext()
+            .getAuthentication()
+            .getName();
 
-    Long scoutId = scout.getId();
-    List<Participacion> participaciones = participacionRepository.findByScoutId(scoutId);
+    Scout scout = scoutRepository.findByApodo(username)
+            .orElseThrow();
+    
+    List<Participacion> participaciones =
+            participacionRepository.findByScoutId(scout.getId());
 
     return participaciones.stream()
-        .map(p -> ActividadDto.fromEntity(p.getActividad()))
-        .toList();
+            .map(p -> new MisActividadesDto(
+                    p.getActividad().getId(),
+                    p.getActividad().getDescripcion(),
+                    p.getActividad().getFecha(),
+                    p.getObservaciones()
+            ))
+            .toList();
 }
 
     public void delete(Long id) {

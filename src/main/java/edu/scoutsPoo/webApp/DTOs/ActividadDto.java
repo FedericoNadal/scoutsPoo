@@ -21,6 +21,7 @@ public class ActividadDto {
     private Long id;
     private String descripcion;
     private LocalDate fecha;
+    
 
     public ActividadDto() {
     }

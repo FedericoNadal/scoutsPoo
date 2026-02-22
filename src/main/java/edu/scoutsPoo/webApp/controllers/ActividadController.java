@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import edu.scoutsPoo.webApp.DTOs.ActividadDto;
+import edu.scoutsPoo.webApp.DTOs.MisActividadesDto;
 
 @RestController
 @RequestMapping("/actividades")
@@ -43,9 +43,9 @@ public class ActividadController {
     // ---------------------------------------------------------------
     // GET MIS ACTIVIDADES
     // ---------------------------------------------------------------
-    @GetMapping("/misActividades")
-    public ResponseEntity<List<ActividadDto>> misActividades() {
-        return ResponseEntity.ok(actividadService.misActividades());
+@GetMapping("/misActividades")
+public ResponseEntity<List<MisActividadesDto>> misActividades() {
+    return ResponseEntity.ok(actividadService.misActividades());
 }
 
     // --------------------------------------------------------------
