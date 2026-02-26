@@ -10,6 +10,11 @@ public class ParticipacionDetalleDto {
     private Long scoutId;
     private String scoutNombre;
     private String scoutApellido;
+    private String scoutApodo;
+    private String scoutSede;
+    private String scoutGrupo;
+    private String scoutComunidad;
+
 
     // Datos de la Actividad
     private Long actividadId;
@@ -46,6 +51,14 @@ public class ParticipacionDetalleDto {
         this.scoutNombre = scoutNombre;
     }
 
+    public String getScoutApodo() {
+        return scoutApodo;
+    }
+
+    public void setScoutApodo(String scoutApodo) {
+        this.scoutApodo = scoutApodo;
+    }
+
     public String getScoutApellido() {
         return scoutApellido;
     }
@@ -53,6 +66,32 @@ public class ParticipacionDetalleDto {
     public void setScoutApellido(String scoutApellido) {
         this.scoutApellido = scoutApellido;
     }
+
+    public String getScoutSede() {
+        return scoutSede;
+    }
+
+    public void setScoutSede(String scoutSede) {
+        this.scoutSede = scoutSede;
+    }
+
+      public String getScoutGrupo() {
+        return scoutGrupo;
+    }
+
+    public void setScoutGrupo(String scoutGrupo) {
+        this.scoutGrupo = scoutGrupo;
+    }
+
+    public String getScoutComunidad() {
+        return scoutComunidad;
+    }
+
+    public void setScoutComunidad(String scoutComunidad) {
+        this.scoutComunidad = scoutComunidad;
+    }
+
+    //////////////////////////////////////////
 
     public Long getActividadId() {
         return actividadId;

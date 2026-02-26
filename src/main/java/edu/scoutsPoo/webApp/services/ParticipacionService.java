@@ -73,6 +73,10 @@ private ParticipacionDetalleDto toDetalleDto(Participacion p) {
     dto.setScoutId(p.getScout().getId());
     dto.setScoutNombre(p.getScout().getNombre());
     dto.setScoutApellido(p.getScout().getApellido());
+    dto.setScoutApodo(p.getScout().getApodo());
+    dto.setScoutSede(p.getScout().getSede().getNombre());
+    dto.setScoutGrupo(p.getScout().getGrupo().getDenominacion());
+    dto.setScoutComunidad(p.getScout().getComunidad().getActividadPrincipal());
 
     // Actividad
     dto.setActividadId(p.getActividad().getId());
