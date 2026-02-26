@@ -75,7 +75,7 @@ public ResponseEntity<Actividad> update(
     String descripcionNueva = body.get("descripcion");
     existente.setDescripcion(descripcionNueva);
 
-    // Guardamos con el service
+    
     actividadService.update(id ,descripcionNueva); // o update
     return ResponseEntity.ok(existente);
 }

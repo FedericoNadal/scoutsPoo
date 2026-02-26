@@ -48,6 +48,31 @@ public class ParticipacionService {
     }
 
     // --------------------------------------------------------------
+    // GET BY SCOUT
+    // --------------------------------------------------------------
+    
+
+public List<ParticipacionDto> findByScoutId(Long scoutId) {
+
+    List<Participacion> participaciones =
+            participacionRepository.findByScoutId(scoutId);
+
+    return participaciones.stream()
+            .map(p -> this.toDto(p))
+            .toList();
+}
+
+private ParticipacionDto toDto(Participacion p) {
+    ParticipacionDto dto = new ParticipacionDto();
+    dto.setScoutId(p.getScout().getId());
+    dto.setActividadId(p.getActividad().getId());
+    dto.setObservaciones(p.getObservaciones());
+    return dto;
+}
+
+
+
+    // --------------------------------------------------------------
     // SAVE 
     // --------------------------------------------------------------
    public Participacion save(Participacion p) {

@@ -43,6 +43,15 @@ public class ParticipacionController {
     }
 
     // --------------------------------------------------------------
+// GET PARTICIPACIONES POR SCOUT
+// --------------------------------------------------------------
+@GetMapping("/scout/{scoutId}")
+public ResponseEntity<List<ParticipacionDto>> getByScout(@PathVariable Long scoutId) {
+    return ResponseEntity.ok(
+        participacionService.findByScoutId(scoutId)
+    );
+}
+    // --------------------------------------------------------------
     // CREATE
     // --------------------------------------------------------------
     @PostMapping
