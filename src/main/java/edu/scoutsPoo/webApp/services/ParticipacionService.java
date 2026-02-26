@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import edu.scoutsPoo.webApp.DTOs.ParticipacionDetalleDto;
 import edu.scoutsPoo.webApp.DTOs.ParticipacionDto;
 
 @Service
@@ -52,21 +53,35 @@ public class ParticipacionService {
     // --------------------------------------------------------------
     
 
-public List<ParticipacionDto> findByScoutId(Long scoutId) {
+public List<ParticipacionDetalleDto> findDetalleByScoutId(Long scoutId) {
 
     List<Participacion> participaciones =
             participacionRepository.findByScoutId(scoutId);
 
     return participaciones.stream()
-            .map(p -> this.toDto(p))
+            .map(p -> toDetalleDto(p))
             .toList();
 }
 
-private ParticipacionDto toDto(Participacion p) {
-    ParticipacionDto dto = new ParticipacionDto();
+private ParticipacionDetalleDto toDetalleDto(Participacion p) {
+
+    ParticipacionDetalleDto dto = new ParticipacionDetalleDto();
+
+    dto.setParticipacionId(p.getId());
+
+    // Scout
     dto.setScoutId(p.getScout().getId());
+    dto.setScoutNombre(p.getScout().getNombre());
+    dto.setScoutApellido(p.getScout().getApellido());
+
+    // Actividad
     dto.setActividadId(p.getActividad().getId());
+    dto.setActividadDescripcion(p.getActividad().getDescripcion());
+    dto.setActividadFecha(p.getActividad().getFecha());
+
+    // Observaciones
     dto.setObservaciones(p.getObservaciones());
+
     return dto;
 }
 

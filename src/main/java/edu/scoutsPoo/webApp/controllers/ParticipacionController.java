@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import edu.scoutsPoo.webApp.DTOs.ActividadDto;
 import edu.scoutsPoo.webApp.DTOs.ParticipacionDto;
+import edu.scoutsPoo.webApp.DTOs.ParticipacionDetalleDto;
 
 @RestController
 @RequestMapping("/participaciones")
@@ -46,9 +47,9 @@ public class ParticipacionController {
 // GET PARTICIPACIONES POR SCOUT
 // --------------------------------------------------------------
 @GetMapping("/scout/{scoutId}")
-public ResponseEntity<List<ParticipacionDto>> getByScout(@PathVariable Long scoutId) {
+public ResponseEntity<List<ParticipacionDetalleDto>> getByScout(@PathVariable Long scoutId) {
     return ResponseEntity.ok(
-        participacionService.findByScoutId(scoutId)
+        participacionService.findDetalleByScoutId(scoutId)
     );
 }
     // --------------------------------------------------------------
