@@ -45,12 +45,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // 👈 ahora sí existe
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/", "/index", "/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/", "/index", "/auth/login","usuarios/registro").permitAll()
                         .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
-                       .requestMatchers("/actividades/misActividades").hasAnyAuthority("SCOUT","ROVER")
+                        .requestMatchers("/actividades/misActividades").hasAnyAuthority("SCOUT","ROVER")
                         .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
                         .requestMatchers("/grupo/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/participaciones/**").hasAnyAuthority("EDUCADOR","ROVER")
