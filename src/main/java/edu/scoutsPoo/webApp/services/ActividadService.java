@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +41,11 @@ public ActividadService(
 }
  
 public Actividad create(Actividad actividad) {
+    
+    if (actividad.getFecha() == null || !actividad.getFecha().isAfter(LocalDate.now())) {
+        throw new IllegalArgumentException("La fecha de la actividad debe ser futura.");
+    }
+    
     return actividadRepository.save(actividad);
 }
 

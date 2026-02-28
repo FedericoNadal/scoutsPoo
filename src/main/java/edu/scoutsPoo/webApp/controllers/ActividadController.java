@@ -52,8 +52,12 @@ public ResponseEntity<List<MisActividadesDto>> misActividades() {
     // CREATE
     // --------------------------------------------------------------
     @PostMapping
-  public Actividad create(@RequestBody Actividad nueva) {
-    return actividadService.create(nueva);
+  public ResponseEntity<?> create(@RequestBody Actividad nueva) {
+    try {
+        return ResponseEntity.ok(actividadService.create(nueva));
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
 }
 
 
