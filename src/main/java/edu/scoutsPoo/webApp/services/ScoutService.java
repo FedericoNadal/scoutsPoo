@@ -13,6 +13,8 @@ import java.util.Optional;
 //import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
+
 
 /**
  *
@@ -28,16 +30,21 @@ public class ScoutService {
     private final GrupoService grupoService;
     private final ComunidadService comunidadService;
 
+    private final ParticipacionRepository participacionRepository;
+
     public ScoutService(
             ScoutRepository scoutRepository,
+            ParticipacionRepository participacionRepository,
             SedeService sedeService,
             GrupoService grupoService,
             ComunidadService comunidadService
     ) {
         this.scoutRepository = scoutRepository;
+        this.participacionRepository = participacionRepository;
         this.sedeService = sedeService;
         this.grupoService = grupoService;
         this.comunidadService = comunidadService;
+
     }
 
     public Scout createFromDto(ScoutDto dto) {
@@ -70,7 +77,7 @@ public class ScoutService {
     }
 
     public List<Scout> findAll() {
-        return scoutRepository.findAll();
+         return scoutRepository.findByActivoTrue();
     }
 
     public boolean existsByApodo(String apodo) {
@@ -86,11 +93,19 @@ public class ScoutService {
         return scoutRepository.save(scout);
     }
 
-    public void delete(Long id) {
+    public void hardDelete(Long id) {
+        participacionRepository.deleteByScoutId(id);
         scoutRepository.findById(id)
                 .ifPresent(scoutRepository::delete);
+        
     }
 
+    public void delete(Long id) {
+    Scout scout = scoutRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Scout no encontrado"));
+    scout.setActivo(false);
+    scoutRepository.save(scout);
+}
     
 
     public Scout create(Scout nuevoScout) {

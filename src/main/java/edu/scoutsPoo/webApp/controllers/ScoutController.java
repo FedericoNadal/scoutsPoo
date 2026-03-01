@@ -117,4 +117,12 @@ public ResponseEntity<Scout> update(@PathVariable Long id,
         scoutService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+@DeleteMapping("/{id}/hard")
+public ResponseEntity<Void> hardDelete(@PathVariable Long id) {
+    scoutService.hardDelete(id);
+    return ResponseEntity.noContent().build();
+}
+
+
 }

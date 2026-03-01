@@ -49,8 +49,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/index", "/auth/login","usuarios/registro").permitAll()
-                        .requestMatchers("/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
+                        .requestMatchers(HttpMethod.GET, "/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
+                        .requestMatchers("/scouts/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/actividades/misActividades").hasAnyAuthority("SCOUT","ROVER")
+                        .requestMatchers(HttpMethod.GET,"/actividades/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
                         .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
                         .requestMatchers("/grupo/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/participaciones/**").hasAnyAuthority("EDUCADOR","ROVER")

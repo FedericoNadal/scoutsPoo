@@ -11,6 +11,8 @@ public interface ParticipacionRepository extends JpaRepository<Participacion, Lo
 
     List<Participacion> findByScoutId(Long scoutId);
 
+    void deleteByScoutId(Long scoutId);
+
     boolean existsByScoutIdAndActividadId(Long scoutId, Long actividadId);
 
   }

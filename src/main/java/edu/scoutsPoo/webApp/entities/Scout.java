@@ -48,11 +48,16 @@ public class Scout {
     @ManyToOne
     private Sede sede;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
+
     // Relación inversa con Usuario (acceso al sistema)
    // Se ignora en JSON para evitar recursión infinita
     @OneToOne(mappedBy = "scout")
     @JsonIgnore
      private Usuario usuario;
+
 
     public Scout() {}
 
@@ -121,7 +126,12 @@ public Long getId() {
     public String getApodo() {
         return apodo;
     }
+    
+    public boolean isActivo() {
+         return activo; }
 
+    public void setActivo(boolean activo) { 
+        this.activo = activo; }
     
 }
 
