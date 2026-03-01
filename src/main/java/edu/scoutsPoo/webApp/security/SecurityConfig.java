@@ -53,7 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/scouts/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/actividades/misActividades").hasAnyAuthority("SCOUT","ROVER")
                         .requestMatchers(HttpMethod.GET,"/actividades/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
-                        .requestMatchers("/actividades/**").hasAnyAuthority("ROVER","EDUCADOR")
+                        .requestMatchers("/actividades/**").hasAnyAuthority("EDUCADOR")
                         .requestMatchers("/grupo/**", "/comunidades/**", "/sedes/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/participaciones/**").hasAnyAuthority("EDUCADOR","ROVER")
                         .anyRequest().authenticated()
