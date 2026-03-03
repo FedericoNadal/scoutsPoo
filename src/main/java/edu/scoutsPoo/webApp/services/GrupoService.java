@@ -17,10 +17,21 @@ public class GrupoService {
     }
 
     // Crear / guardar
-    public Grupo save(Grupo grupo) {
+    public Grupo create(Grupo grupo) {
         return grupoRepository.save(grupo);
     }
-
+    
+    //actualizar campos editables
+    public Grupo update(Long id, String nuevaDenominacion) {
+    Grupo existente = findById(id)
+            .orElseThrow(() -> new RuntimeException("Grupo no encontrado: " + id));
+    
+    if (nuevaDenominacion != null) {
+        existente.setDenominacion(nuevaDenominacion);
+    }
+    
+    return grupoRepository.save(existente);
+}
     // Obtener todos
     public List<Grupo> findAll() {
         return grupoRepository.findAll();

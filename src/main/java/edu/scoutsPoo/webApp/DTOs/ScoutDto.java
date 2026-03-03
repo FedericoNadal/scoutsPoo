@@ -1,24 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 package edu.scoutsPoo.webApp.DTOs;
 
-//import org.thymeleaf.expression.Ids;
-//import edu.scoutsPoo.webApp.entities.Comunidad;
-//import edu.scoutsPoo.webApp.entities.Grupo;
-//import edu.scoutsPoo.webApp.entities.Sede;
-
-
-
-/**
- *
- * @author fede
- */
 public class ScoutDto {
 
-    //private long codigo;
+   
     private String apodo;
     private String nombre;
     private String apellido;
@@ -28,14 +13,7 @@ public class ScoutDto {
     private Long idGrupo;        // solo el ID
     private Long idComunidad;    // solo el ID
     
-   // private Grupo grupo; 
-    //private Sede sede;
-    //private Comunidad comunidad; 
-
-    //public int getCodigo() {
-       // return codigo;
-   // }
-
+  
     public String getApodo() {
         return apodo;
     }
@@ -79,23 +57,6 @@ public class ScoutDto {
     public Long getIdComunidad() {
         return idComunidad;
     }
-/* 
-public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
- public void setApodo(String apodo) {
-        this.apodo = apodo;
-    }
-       public void setGrupo(Grupo grupo) {
-        this.grupo = grupo;
-    }
 
-   
-
-    public void setComunidad(Comunidad comunidad) {
-        this.comunidad = comunidad;
-    }
-    
-*/
 
 }

@@ -22,8 +22,7 @@ public class SedeService {
     
     public Sede findByCodigo(Long codigo) {
         return sedeRepo.findByCodigo(codigo);
-               // .orElseThrow(() -> new IllegalArgumentException("La sede no existe"));
-    }
+     }
 
     @Transactional
     public Sede create(Sede sede) {
@@ -33,18 +32,31 @@ public class SedeService {
         return sedeRepo.save(sede);
     }
 
-    @Transactional
-    public Sede update(Long id, Sede nuevosDatos) {
 
-        Sede sede = findByCodigo(id);
-
-        sede.setNombre(nuevosDatos.getNombre());
-        sede.setDireccion(nuevosDatos.getDireccion());
-        sede.setProvincia(nuevosDatos.getProvincia());
-        sede.setLocalidad(nuevosDatos.getLocalidad());
-
-        return sedeRepo.save(sede);
+    
+   @Transactional
+public Sede update(Long id, Sede nueva) {
+    Sede existente = findByCodigo(id);
+    
+    if (existente == null) {
+        throw new RuntimeException("Sede no encontrada: " + id);
     }
+    
+    if (nueva.getNombre() != null) {
+        existente.setNombre(nueva.getNombre());
+    }
+    if (nueva.getDireccion() != null) {
+        existente.setDireccion(nueva.getDireccion());
+    }
+    if (nueva.getProvincia() != null) {
+        existente.setProvincia(nueva.getProvincia());
+    }
+    if (nueva.getLocalidad() != null) {
+        existente.setLocalidad(nueva.getLocalidad());
+    }
+    
+    return sedeRepo.save(existente);
+}
 
     @Transactional
     public void delete(Long codigo) {

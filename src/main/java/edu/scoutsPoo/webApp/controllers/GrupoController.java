@@ -3,12 +3,10 @@ package edu.scoutsPoo.webApp.controllers;
 import edu.scoutsPoo.webApp.entities.Grupo;
 import edu.scoutsPoo.webApp.services.GrupoService;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Map;
 
 @RestController
@@ -29,34 +27,35 @@ public class GrupoController {
 
     // GET by id
     @GetMapping("/{id}")
-    public Optional<Grupo> getById(@PathVariable Long id) {
-        return grupoService.findById(id);
-    }
+   public ResponseEntity<Grupo> getById(@PathVariable Long id) {
+    return grupoService.findById(id)
+            .map(g -> ResponseEntity.ok(g))
+            .orElse(ResponseEntity.notFound().build());
+}
 
     // CREATE
     @PostMapping
-    public Grupo create(@RequestBody Grupo grupo) {
-        return grupoService.save(grupo);
-    }
+  public ResponseEntity<Grupo> create(@RequestBody Grupo grupo) {
+    return ResponseEntity.ok(grupoService.create(grupo));
+}
 
-    // UPDATE
+    // UPDATE  
     @PutMapping("/{id}")
-public Grupo update(@PathVariable Long id, @RequestBody Map<String, String> body) {
-    Grupo existente = grupoService.findById(id)
-            .orElseThrow(() -> new RuntimeException("No existe"));
-
-    // Evitamos null y asignamos la denominación correctamente
-    String nuevaDescripcion = body.get("descripcion");
-    if (nuevaDescripcion != null) {
-        existente.setDenominacion(nuevaDescripcion);
-    }
-
-    return grupoService.save(existente);
+public ResponseEntity<Grupo> update(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    return grupoService.findById(id).isEmpty() 
+        ? ResponseEntity.notFound().build()
+        : ResponseEntity.ok(grupoService.update(id, body.get("denominacion")));
 }
 
     // DELETE
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        grupoService.deleteById(id);
+public ResponseEntity<Void> delete(@PathVariable Long id) {
+    if (grupoService.findById(id).isEmpty()) {
+        return ResponseEntity.notFound().build();
     }
+    grupoService.deleteById(id);
+    return ResponseEntity.noContent().build(); 
+}
+
+
 } 

@@ -14,15 +14,11 @@ public interface ScoutRepository extends JpaRepository<Scout, Long> {
 
     List<Scout> findBySedeCodigo(Long sedeId);
 
-    //List<Scout> findByApellidoContainingIgnoreCase(String apellido);
-
     boolean existsByApodo(String apodo);
 
     Optional <Scout> findByApodo(String apodo);
     
     Optional <Scout> findById(Long id);
-
-    boolean existsById(Long id);
 
     List<Scout> findByActivoTrue();
 

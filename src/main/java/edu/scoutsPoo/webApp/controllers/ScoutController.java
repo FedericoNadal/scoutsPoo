@@ -3,7 +3,6 @@ package edu.scoutsPoo.webApp.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,20 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.scoutsPoo.webApp.DTOs.ScoutDto;
 import edu.scoutsPoo.webApp.entities.Scout;
 import edu.scoutsPoo.webApp.services.ScoutService;
-import edu.scoutsPoo.webApp.services.UsuarioService;
+
 
 @RestController
 @RequestMapping("/scouts")
 public class ScoutController {
 
-    @Autowired
+    //@Autowired
     
      private final ScoutService scoutService;
-     private final UsuarioService usuarioService;
+     
 
-    public ScoutController(ScoutService scoutService, UsuarioService usuarioService) {
+    public ScoutController(ScoutService scoutService) {
         this.scoutService = scoutService;
-        this.usuarioService = usuarioService;
+        
     }
 
     // --------------------------------------------------------------
@@ -44,24 +43,21 @@ public class ScoutController {
     // --------------------------------------------------------------
     // GET BY APODO
     // --------------------------------------------------------------
-    @GetMapping("/apodo/{apodo}")
-    public Optional<Scout> getByApodo(@PathVariable String apodo) {
-        return scoutService.findByApodo(apodo);
-               
-    }
+   @GetMapping("/apodo/{apodo}")
+public ResponseEntity<Scout> getByApodo(@PathVariable String apodo) {
+    return scoutService.findByApodo(apodo)
+            .map(s -> ResponseEntity.ok(s))
+            .orElse(ResponseEntity.notFound().build());
+}
 
      // --------------------------------------------------------------
     // GET BY Id
     // --------------------------------------------------------------
-    @GetMapping("/{id}")
-public ResponseEntity<?> getById(@PathVariable Long id) {
-    Optional<Scout> optional = scoutService.findById(id);
-
-    if (optional.isEmpty()) {
-        return ResponseEntity.notFound().build();
-    }
-
-    return ResponseEntity.ok(optional.get());
+    @GetMapping("/{id}") 
+    public ResponseEntity<Scout> getById(@PathVariable Long id) {
+    return scoutService.findById(id)
+            .map(s -> ResponseEntity.ok(s))
+            .orElse(ResponseEntity.notFound().build());
 }
 
 
@@ -76,33 +72,11 @@ public ResponseEntity<?> getById(@PathVariable Long id) {
     // --------------------------------------------------------------
     // UPDATE  (NO modificar id ni apodo )
     // --------------------------------------------------------------
-    @PutMapping("/{id}")
-public ResponseEntity<Scout> update(@PathVariable Long id,
-                                    @RequestBody Scout nuevo) {
-
-    Optional<Scout> resultado = scoutService.findById(id);
-    if (resultado.isEmpty()) {
-        return ResponseEntity.notFound().build();
-    }
-
-    Scout existente = resultado.get();
-
-    if (nuevo.getNombre() != null) {
-        existente.setNombre(nuevo.getNombre());
-    }
-
-    if (nuevo.getApellido() != null) {
-        existente.setApellido(nuevo.getApellido());
-    }
-
-    if (nuevo.getGraduacion() != null &&
-        !nuevo.getGraduacion().equals(existente.getGraduacion())) {
-
-        existente.setGraduacion(nuevo.getGraduacion());
-       usuarioService.actualizarRolSegunScout(existente);
-    }
-
-    return ResponseEntity.ok(scoutService.save(existente));
+@PutMapping("/{id}")
+public ResponseEntity<Scout> update(@PathVariable Long id, @RequestBody Scout nuevo) {
+    return scoutService.findById(id).isEmpty()
+        ? ResponseEntity.notFound().build()
+        : ResponseEntity.ok(scoutService.update(id, nuevo));
 }
 
 
@@ -118,11 +92,15 @@ public ResponseEntity<Scout> update(@PathVariable Long id,
         return ResponseEntity.noContent().build();
     }
 
-@DeleteMapping("/{id}/hard")
-public ResponseEntity<Void> hardDelete(@PathVariable Long id) {
-    scoutService.hardDelete(id);
-    return ResponseEntity.noContent().build();
-}
+    //hard delete no se usa desde front.
+    @DeleteMapping("/{id}/hard")
+    public ResponseEntity<Void> hardDelete(@PathVariable Long id) {
+        if (!scoutService.existsById(id)) {
+        return ResponseEntity.notFound().build();
+    }
+        scoutService.hardDelete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

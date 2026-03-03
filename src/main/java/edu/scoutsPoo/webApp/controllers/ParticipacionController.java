@@ -3,15 +3,13 @@ package edu.scoutsPoo.webApp.controllers;
 import edu.scoutsPoo.webApp.entities.Participacion;
 import edu.scoutsPoo.webApp.services.ParticipacionService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import edu.scoutsPoo.webApp.DTOs.ActividadDto;
 import edu.scoutsPoo.webApp.DTOs.ParticipacionDto;
 import edu.scoutsPoo.webApp.DTOs.ParticipacionDetalleDto;
 
@@ -19,8 +17,14 @@ import edu.scoutsPoo.webApp.DTOs.ParticipacionDetalleDto;
 @RequestMapping("/participaciones")
 public class ParticipacionController {
 
-    @Autowired
-    private ParticipacionService participacionService;
+     // @Autowired
+    //private ParticipacionService participacionService;
+
+private final ParticipacionService participacionService;
+
+public ParticipacionController(ParticipacionService participacionService) {
+    this.participacionService = participacionService;
+}
 
     // --------------------------------------------------------------
     // GET ALL
@@ -30,8 +34,7 @@ public class ParticipacionController {
         return participacionService.findAll();
     }
 
-
-    
+   
 
     // --------------------------------------------------------------
     // GET BY ID
@@ -63,19 +66,13 @@ public ResponseEntity<List<ParticipacionDetalleDto>> getByScout(@PathVariable Lo
     // --------------------------------------------------------------
     // UPDATE
     // --------------------------------------------------------------
-    @PutMapping("/{id}")
-   public ResponseEntity<Participacion> updateObservaciones(
+   @PutMapping("/{id}")
+public ResponseEntity<Participacion> updateObservaciones(
         @PathVariable Long id,
         @RequestBody Map<String, String> body) {
-
-    return participacionService.findById(id)
-        .map(p -> {
-            if (body.containsKey("observaciones")) {
-                p.setObservaciones(body.get("observaciones"));
-            }
-            return ResponseEntity.ok(participacionService.updateObservaciones(p));
-        })
-        .orElse(ResponseEntity.notFound().build());
+    return participacionService.findById(id).isEmpty()
+        ? ResponseEntity.notFound().build()
+        : ResponseEntity.ok(participacionService.updateObservaciones(id, body.get("observaciones")));
 }
 
     // --------------------------------------------------------------

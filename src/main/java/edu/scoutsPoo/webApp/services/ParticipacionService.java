@@ -7,7 +7,6 @@ import edu.scoutsPoo.webApp.repositories.ActividadRepository;
 import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
 import edu.scoutsPoo.webApp.repositories.ScoutRepository;
 
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -94,7 +93,7 @@ private ParticipacionDetalleDto toDetalleDto(Participacion p) {
     // --------------------------------------------------------------
     // SAVE 
     // --------------------------------------------------------------
-   public Participacion save(Participacion p) {
+   private Participacion save(Participacion p) {
 
     if (p.getActividad() == null || p.getScout() == null) {
         throw new IllegalArgumentException("Actividad y Scout son obligatorios");
@@ -135,31 +134,20 @@ public Participacion saveFromDto(ParticipacionDto dto) {
     return participacionRepository.save(participacion);
 }
 
-///
-public Participacion updateObservaciones(Participacion p) {
+////////////////////////
+//UPDATE OBSERVACIONES
+/////////////////////////
+
+public Participacion updateObservaciones(Long id, String observaciones) {
+    Participacion p = findById(id)
+            .orElseThrow(() -> new RuntimeException("Participacion no encontrada: " + id));
+    if (observaciones != null) {
+        p.setObservaciones(observaciones);
+    }
     return participacionRepository.save(p);
 }
 
-    //---------------------------------
-    //   UPDATE from dto
-    //--------------------------------------
-    public Participacion updateFromDto(Long id, ParticipacionDto dto) {
-    Participacion p = participacionRepository.findById(id)
-                     .orElseThrow(() -> new IllegalArgumentException("Participacion no encontrada"));
-
-    Scout scout = scoutRepository.findById(dto.getScoutId())
-                     .orElseThrow(() -> new IllegalArgumentException("Scout no encontrado"));
-    Actividad actividad = actividadRepository.findById(dto.getActividadId())
-                     .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
-
-    p.setScout(scout);
-    p.setActividad(actividad);
-   // p.setFecha(dto.getFecha());
-    p.setObservaciones(dto.getObservaciones());
-
-    return participacionRepository.save(p);
-}
-
+    
     // --------------------------------------------------------------
     // DELETE
     // --------------------------------------------------------------

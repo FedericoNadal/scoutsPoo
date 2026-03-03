@@ -10,11 +10,10 @@ import edu.scoutsPoo.webApp.entities.Sede;
 import edu.scoutsPoo.webApp.repositories.ScoutRepository;
 import java.util.List;
 import java.util.Optional;
-//import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
-
+import org.springframework.context.annotation.Lazy;
 
 /**
  *
@@ -24,36 +23,44 @@ import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
 @Service
 public class ScoutService {
 
-    @Autowired
+    //@Autowired
     private final ScoutRepository scoutRepository;
     private final SedeService sedeService;
     private final GrupoService grupoService;
     private final ComunidadService comunidadService;
+  
 
     private final ParticipacionRepository participacionRepository;
+
+    private final UsuarioService usuarioService; // ← 
 
     public ScoutService(
             ScoutRepository scoutRepository,
             ParticipacionRepository participacionRepository,
             SedeService sedeService,
             GrupoService grupoService,
-            ComunidadService comunidadService
+            ComunidadService comunidadService,
+            @Lazy UsuarioService usuarioService
     ) {
         this.scoutRepository = scoutRepository;
         this.participacionRepository = participacionRepository;
         this.sedeService = sedeService;
         this.grupoService = grupoService;
         this.comunidadService = comunidadService;
+        this.usuarioService = usuarioService;
 
     }
 
-    public Scout createFromDto(ScoutDto dto) {
+public Scout createFromDto(ScoutDto dto) {
         if (dto.getIdSede() == null) {
                 
     throw new IllegalArgumentException("Id de Sede no puede ser null");
-}
+    }
         Sede sede = sedeService.findByCodigo(dto.getIdSede());
-                //.orElseThrow(() -> new RuntimeException("Sede no encontrada: " + dto.getIdSede()));
+              //.orElseThrow(() -> new RuntimeException("Sede no encontrada: " + dto.getIdSede()));
+            if (sede == null) {
+                 throw new RuntimeException("Sede no encontrada: " + dto.getIdSede());
+                 }
 
         Grupo grupo = grupoService.findById(dto.getIdGrupo())
                 .orElseThrow(() -> new RuntimeException("Grupo no encontrado: " + dto.getIdGrupo()));
@@ -92,6 +99,28 @@ public class ScoutService {
     public Scout save(Scout scout) {
         return scoutRepository.save(scout);
     }
+
+// UPDATE  (NO modificar id ni apodo )
+    public Scout update(Long id, Scout nuevo) {
+    Scout existente = findById(id)
+            .orElseThrow(() -> new RuntimeException("Scout no encontrado: " + id));
+
+    if (nuevo.getNombre() != null) {
+        existente.setNombre(nuevo.getNombre());
+    }
+
+    if (nuevo.getApellido() != null) {
+        existente.setApellido(nuevo.getApellido());
+    }
+
+    if (nuevo.getGraduacion() != null &&
+        !nuevo.getGraduacion().equals(existente.getGraduacion())) {
+        existente.setGraduacion(nuevo.getGraduacion());
+        usuarioService.actualizarRolSegunScout(existente);
+    }
+
+    return save(existente);
+}
 
     public void hardDelete(Long id) {
         participacionRepository.deleteByScoutId(id);

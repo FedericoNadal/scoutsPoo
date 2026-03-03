@@ -36,7 +36,7 @@ public class UsuarioService implements UserDetailsService {
         throw new RuntimeException("El nombre de usuario ya existe");
     }
 
-    // 🔍 Intentar resolver scout si viene null
+    //  Intenta resolver scout si viene null
     Scout scoutFinal = Optional.ofNullable(scout)
             .or(() -> scoutService.findByApodo(username))
             .orElse(null);
@@ -75,7 +75,7 @@ public class UsuarioService implements UserDetailsService {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        return user; // Aquí luego se reemplaza por JWT o sesión
+        return user; // se reemplaza por JWT o sesión
     }
 
     // ---------------------------------------------------

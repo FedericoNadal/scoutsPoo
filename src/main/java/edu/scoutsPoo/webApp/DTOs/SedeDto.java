@@ -1,14 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 package edu.scoutsPoo.webApp.DTOs;
 
-/**
- *
- * @author fede
- */
 public class SedeDto {
 
      
@@ -20,7 +12,7 @@ public class SedeDto {
 
     
 ////////////////////////
-//copnstructor
+//constructor
 /////////////////////
 
      public SedeDto(int codigo, String nombre, String direccion, String provincia, String localidad) {

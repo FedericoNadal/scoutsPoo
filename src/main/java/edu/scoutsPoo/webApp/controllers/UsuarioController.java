@@ -3,14 +3,12 @@ package edu.scoutsPoo.webApp.controllers;
 import edu.scoutsPoo.webApp.entities.Rol;
 import edu.scoutsPoo.webApp.entities.Scout;
 import edu.scoutsPoo.webApp.entities.Usuario;
-import edu.scoutsPoo.webApp.services.ScoutService;
 import edu.scoutsPoo.webApp.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/usuarios")
@@ -19,8 +17,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @Autowired
-    private ScoutService scoutService;
 
     // ---------------------------------------------------
     // REGISTRO DE USUARIO
@@ -47,19 +43,3 @@ public class UsuarioController {
         }
     }
 }
-/*    // ---------------------------------------------------
-    // LOGIN DE USUARIO VIEJO
-    // ---------------------------------------------------
-    @PostMapping("/login-viejo") //OJO!! solo para testing de security!!
-    public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
-        try {
-            String username = payload.get("username");
-            String password = payload.get("password");
-            Usuario usuario = usuarioService.login(username, password);
-            return ResponseEntity.ok(usuario);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(e.getMessage());
-        }
-    }
-}
-*/

@@ -48,6 +48,17 @@ public ResponseEntity<List<MisActividadesDto>> misActividades() {
     return ResponseEntity.ok(actividadService.misActividades());
 }
 
+    // ---------------------------------------------------------------
+    // GET participaciones por actividad
+    // ---------------------------------------------------------------
+
+@GetMapping("/{id}/participaciones")
+public ResponseEntity<List<Participacion>> participaciones(@PathVariable Long id) {
+   
+    return ResponseEntity.ok(actividadService.getParticipaciones(id));
+
+}
+
     // --------------------------------------------------------------
     // CREATE
     // --------------------------------------------------------------
@@ -64,9 +75,10 @@ public ResponseEntity<List<MisActividadesDto>> misActividades() {
 
     // --------------------------------------------------------------
     // UPDATE
+    //--------------------------------------------------------------------
 
    @PutMapping("/{id}")
-public ResponseEntity<Actividad> update(
+     public ResponseEntity<Actividad> update(
         @PathVariable Long id,
         @RequestBody Map<String, String> body
 ) {
@@ -97,22 +109,5 @@ public ResponseEntity<Actividad> update(
     }
 
 
-@GetMapping("/{id}/participaciones")
-public ResponseEntity<List<Participacion>> participaciones(@PathVariable Long id) {
-
-    Optional<Actividad> opt = actividadService.findById(id);
-
-    if (opt.isEmpty()) {
-        return ResponseEntity.notFound().build();
-    }
-
-    Actividad actividad = opt.get();
-
-    List<Participacion> participaciones =
-        new ArrayList<>(actividad.getParticipaciones());
-        System.out.println(participaciones);
-
-    return ResponseEntity.ok(participaciones);
-}
 
 } 

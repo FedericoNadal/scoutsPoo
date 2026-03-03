@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; // 👈 IMPORTANTE
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; 
 
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,12 +25,12 @@ public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtAuthFilter jwtAuthFilter; // 👈 DECLARADO
+    private final JwtAuthFilter jwtAuthFilter; 
 
     public SecurityConfig(
             UserDetailsService userDetailsService,
             BCryptPasswordEncoder passwordEncoder,
-            JwtAuthFilter jwtAuthFilter   // 👈 INYECTADO
+            JwtAuthFilter jwtAuthFilter  
     ) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/", "/index", "/auth/login","usuarios/registro").permitAll()
+                        .requestMatchers("/", "/index", "/auth/login","/usuarios/registro").permitAll()
                         .requestMatchers(HttpMethod.GET, "/scouts/**").hasAnyAuthority("SCOUT","ROVER","EDUCADOR")
                         .requestMatchers("/scouts/**").hasAuthority("EDUCADOR")
                         .requestMatchers("/actividades/misActividades").hasAnyAuthority("SCOUT","ROVER")

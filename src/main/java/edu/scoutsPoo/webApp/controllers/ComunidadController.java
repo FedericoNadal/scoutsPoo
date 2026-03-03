@@ -1,11 +1,11 @@
 package edu.scoutsPoo.webApp.controllers;
 
 import edu.scoutsPoo.webApp.entities.Comunidad;
-import edu.scoutsPoo.webApp.entities.Sede;
 import edu.scoutsPoo.webApp.services.ComunidadService;
 import edu.scoutsPoo.webApp.services.SedeService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -64,44 +64,14 @@ public class ComunidadController {
     // ----------------------------------------
     // DELETE
     // ----------------------------------------
-    @DeleteMapping("/{numero}")
-    public void delete(@PathVariable Long numero) {
+   @DeleteMapping("/{numero}")
+    public ResponseEntity<Void> delete(@PathVariable Long numero) {
+     if (comunidadService.findByNumero(numero).isEmpty()) {
+        return ResponseEntity.notFound().build();
+        }
         comunidadService.deleteByNumero(numero);
+        return ResponseEntity.noContent().build(); 
     }
 
-    // ----------------------------------------
-    // (EXTRA) Agregar una sede a una comunidad
-    // ----------------------------------------
-    @PostMapping("/{numero}/sedes/{codigoSede}")
-    public Comunidad addSede(
-            @PathVariable Long numero,
-            @PathVariable Long codigoSede
-    ) {
-        Comunidad comunidad = comunidadService.findByNumero(numero)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comunidad no encontrada"));
-
-        Sede sede = sedeService.findByCodigo(codigoSede);
-
-        comunidad.getSedes().add(sede);
-
-        return comunidadService.save(comunidad);
-    }
-
-    // ----------------------------------------
-    // (EXTRA) Remover una sede de una comunidad
-    // ----------------------------------------
-    @DeleteMapping("/{numero}/sedes/{codigoSede}")
-    public Comunidad removeSede(
-            @PathVariable Long numero,
-            @PathVariable Long codigoSede
-    ) {
-        Comunidad comunidad = comunidadService.findByNumero(numero)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comunidad no encontrada"));
-
-        Sede sede = sedeService.findByCodigo(codigoSede);
-
-        comunidad.getSedes().remove(sede);
-
-        return comunidadService.save(comunidad);
-    }
+   
 }

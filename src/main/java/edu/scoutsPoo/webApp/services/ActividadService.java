@@ -3,7 +3,6 @@ package edu.scoutsPoo.webApp.services;
 import edu.scoutsPoo.webApp.entities.Actividad;
 import edu.scoutsPoo.webApp.entities.Participacion;
 import edu.scoutsPoo.webApp.entities.Scout;
-import edu.scoutsPoo.webApp.entities.Usuario;
 import edu.scoutsPoo.webApp.repositories.ActividadRepository;
 import edu.scoutsPoo.webApp.repositories.ScoutRepository;
 import edu.scoutsPoo.webApp.repositories.ParticipacionRepository;
@@ -11,13 +10,12 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import edu.scoutsPoo.webApp.DTOs.ActividadDto;
 import edu.scoutsPoo.webApp.DTOs.MisActividadesDto;
 
 @Service
@@ -40,6 +38,7 @@ public ActividadService(
     
 }
  
+//CREATE
 public Actividad create(Actividad actividad) {
     
     if (actividad.getFecha() == null || !actividad.getFecha().isAfter(LocalDate.now())) {
@@ -57,6 +56,7 @@ public Actividad create(Actividad actividad) {
     return actividadRepository.findById(id);
 }
 
+//GET MisActividades
 public List<MisActividadesDto> misActividades() {
 
     String username = SecurityContextHolder
@@ -65,7 +65,7 @@ public List<MisActividadesDto> misActividades() {
             .getName();
 
     Scout scout = scoutRepository.findByApodo(username)
-            .orElseThrow();
+            .orElseThrow(() -> new RuntimeException("Scout no encontrado: " + username));
     
     List<Participacion> participaciones =
             participacionRepository.findByScoutId(scout.getId());
@@ -79,13 +79,13 @@ public List<MisActividadesDto> misActividades() {
             ))
             .toList();
 }
-
+ //DELETE
     public void delete(Long id) {
         if (actividadRepository.existsById(id)) {
             actividadRepository.deleteById(id);
         }
     }
-
+//EXISTById
     public boolean existsById(Long id) {
         return actividadRepository.existsById(id);
       }
@@ -104,5 +104,12 @@ public Actividad update(long id, String descripcionNueva) {
     Actividad actividadExistente = optionalActividad.get();
     actividadExistente.setDescripcion(descripcionNueva);
     return actividadRepository.save(actividadExistente);
+}
+
+//GET PARTICIPACIONES
+public List<Participacion> getParticipaciones(Long id) {
+    return actividadRepository.findById(id)
+            .map(a -> new ArrayList<>(a.getParticipaciones()))
+            .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
 }
 }

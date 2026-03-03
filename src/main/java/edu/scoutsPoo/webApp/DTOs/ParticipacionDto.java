@@ -6,7 +6,6 @@ public class ParticipacionDto {
 
     private Long scoutId;
     private Long actividadId;
-   // private LocalDate fecha;
     private String observaciones;
 
     public ParticipacionDto() {}
@@ -27,13 +26,6 @@ public class ParticipacionDto {
         this.actividadId = actividadId;
     }
 
-   // public LocalDate getFecha() {
-   //     return fecha;
-   // }
-
-   // public void setFecha(LocalDate fecha) {
-   //     this.fecha = fecha;
-   // }
 
     public String getObservaciones() {
         return observaciones;

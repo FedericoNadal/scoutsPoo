@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface ComunidadRepository extends JpaRepository<Comunidad, Long> {
 
-    //List<Comunidad> findBySedesId(Long sedeCodigo);  // por sede
     Optional <Comunidad> findByNumero(Long numero);
     List<Comunidad> findByActividadPrincipal(String actividadPrincipal);
 
